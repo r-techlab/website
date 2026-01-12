@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Card</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --dark: #0f172a;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow-x: hidden;
+            padding: 2rem 1rem;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            opacity: 0.1;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) { width: 100px; height: 100px; top: 10%; left: 10%; animation-delay: 0s; }
+        .shape:nth-child(2) { width: 60px; height: 60px; top: 20%; right: 20%; animation-delay: 5s; }
+        .shape:nth-child(3) { width: 80px; height: 80px; bottom: 20%; left: 15%; animation-delay: 10s; }
+        .shape:nth-child(4) { width: 120px; height: 120px; bottom: 10%; right: 10%; animation-delay: 15s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(120deg); }
+            66% { transform: translateY(15px) rotate(240deg); }
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 
+                0 32px 64px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            border-radius: 24px 24px 0 0;
+        }
+
+        .container:hover {
+            transform: translateY(-8px);
+            box-shadow: 
+                0 40px 80px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .card-id {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            background: rgba(255, 255, 255, 0.7);
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            display: inline-block;
+            font-weight: 500;
+        }
+
+        .card-id span {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .status-message {
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            font-weight: 500;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .loading {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            border-color: rgba(99, 102, 241, 0.2);
+        }
+
+        .error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .form-group {
+            position: relative;
+            transition: transform 0.2s ease;
+        }
+
+        .form-group:hover {
+            transform: translateX(4px);
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        input[type="url"],
+        input[type="password"] {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--gray-800);
+            background: var(--white);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 
+                0 0 0 4px rgba(99, 102, 241, 0.1),
+                0 8px 24px rgba(99, 102, 241, 0.15);
+            transform: translateY(-2px);
+        }
+
+        input:not(:placeholder-shown) {
+            border-color: var(--success);
+        }
+
+        input:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--gray-600), var(--gray-700));
+            color: white;
+            box-shadow: 0 8px 24px rgba(71, 85, 105, 0.3);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(71, 85, 105, 0.4);
+        }
+
+        .btn-primary:disabled {
+            background: linear-gradient(135deg, var(--gray-400), var(--gray-500));
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+            opacity: 0.7;
+        }
+
+        .btn-primary:disabled::before {
+            display: none;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+
+            .container {
+                padding: 2rem;
+                border-radius: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem;
+                border-radius: 16px;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            input[type="url"],
+            input[type="password"] {
+                padding: 0.875rem 1.25rem;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Edit Card</h1>
+            <p class="subtitle">Update your information</p>
+            <p class="card-id">Card ID: <span id="displayId"></span></p>
+        </div>
+
+        <div id="status" class="status-message loading">
+            <span class="loading-spinner"></span>
+            Loading your information...
+        </div>
+
+        <form id="edit-form" style="display: none;">
+            <input type="hidden" id="recordId" name="recordId">
+            <input type="hidden" id="current_password" name="current_password">
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="google_url">Google Review</label>
+                    <div class="input-wrapper">
+                        <input type="url" id="google_url" name="google_url" placeholder="https://www.google.com/review/yourprofile">
+                    </div>
+                </div>
+                    <div class="form-group">
+                        <label for="whatsapp_url">WhatsApp</label>
+                        <div class="input-wrapper">
+                            <input type="url" id="whatsapp_url" name="whatsapp_url" placeholder="https://wa.me/yourNumber">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="instagram_url">Instagram</label>
+                        <div class="input-wrapper">
+                            <input type="url" id="instagram_url" name="instagram_url" placeholder="https://instagram.com/yourhandle">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="facebook_url">Facebook</label>
+                        <div class="input-wrapper">
+                            <input type="url" id="facebook_url" name="facebook_url" placeholder="https://facebook.com/yourprofile">
+                        </div>
+                    </div>
+					<div class="form-group">
+                        <label for="website_url">Website</label>
+                        <div class="input-wrapper">
+                            <input type="url" id="website_url" name="website_url" placeholder="https://wwww.yoursite.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="youtube_url">Youtube</label>
+                        <div class="input-wrapper">
+                            <input type="url" id="youtube_url" name="youtube_url" placeholder="https://youtube.com/yourprofile">
+                        </div>
+                    </div>
+                <div class="form-group">
+                    <label for="entered_password">Current Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="entered_password" name="entered_password" placeholder="Enter your current password" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary" id="saveButton">
+                    Save Changes
+                </button>
+                <button type="button" id="changePasswordBtn" class="btn btn-secondary">
+                    Change Password
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const SHEET_ID = '1wAPgSKnAFwBDYe8eRHL_pgluEcIk1mJXc79l_Istt6Y';
+        const API_KEY = 'AIzaSyByyiuwuJBysKl2xtvl6wCw6Gz9shyDzXs';
+        const SHEET_NAME = 'SocialMediaCard';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxixKSrlt7_Qp5zMGpGrLFr5dct8ah6RPF4WHgX9s4o3hwaziEi9rgTpAgHR2w18YxF/exec';
+
+        function getIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            return id || '10001';
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const recordId = getIdFromUrl();
+            document.getElementById('recordId').value = recordId;
+            document.getElementById('displayId').textContent = recordId;
+    
+            document.getElementById('changePasswordBtn').addEventListener('click', function() {
+                window.location.href = `change-password.html?id=${recordId}`;
+            });
+            
+            console.log('Loading business card with ID:', recordId);
+            
+            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`)
+                .then(response => response.json())
+                .then(data => {
+                    const rows = data.values;
+                    if (rows && rows.length > 0) {
+                        const headers = rows[0];
+                        
+                        let idColumnIndex = -1;
+                        headers.forEach((header, index) => {
+                            if (header.toLowerCase().trim() === 'id') {
+                                idColumnIndex = index;
+                                console.log('Found ID column at index:', idColumnIndex);
+                            }
+                        });
+                        
+                        let profileData = null;
+                        
+                        if (idColumnIndex !== -1) {
+                            for (let i = 1; i < rows.length; i++) {
+                                if (rows[i][idColumnIndex] === recordId) {
+                                    profileData = rows[i];
+                                    console.log('Found matching record at row:', i + 1);
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        if (!profileData) {
+                            document.getElementById('status').className = 'status-message error';
+                            document.getElementById('status').innerHTML = `Record with ID "${recordId}" not found.`;
+                            console.error('No matching record found for ID:', recordId);
+                            return;
+                        }
+
+                        const profile = {};
+                        headers.forEach((header, index) => {
+                            const normalizedHeader = header.toLowerCase().trim();
+                            profile[normalizedHeader] = index < profileData.length ? profileData[index] : '';
+                        });
+
+                        document.getElementById('google_url').value = profile.google_url || profile.googleurl || '';
+						document.getElementById('whatsapp_url').value = profile.whatsapp_url || profile.whatsappurl || '';
+                        document.getElementById('instagram_url').value = profile.instagram_url || profile.instagramurl || '';
+						document.getElementById('facebook_url').value = profile.facebook_url || profile.facebookurl || '';
+						document.getElementById('website_url').value = profile.website_url  || '';
+						document.getElementById('youtube_url').value = profile.youtube_url || profile.youtubeurl || '';
+						
+                        document.getElementById('current_password').value = profile.password || '';
+
+                        document.getElementById('status').style.display = 'none';
+                        document.getElementById('edit-form').style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading data:', error);
+                    document.getElementById('status').className = 'status-message error';
+                    document.getElementById('status').textContent = 'Error loading data: ' + error.message;
+                });
+        });
+
+        document.getElementById('edit-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const statusDiv = document.getElementById('status');
+            const saveButton = document.getElementById('saveButton');
+            
+            saveButton.disabled = true;
+            saveButton.innerHTML = '<span class="loading-spinner"></span> Saving...';
+            
+            statusDiv.className = 'status-message loading';
+            statusDiv.innerHTML = '<span class="loading-spinner"></span>Saving your changes...';
+            statusDiv.style.display = 'block';
+
+            const formData = {
+                recordId: document.getElementById('recordId').value,
+				
+                google_url: document.getElementById('google_url').value,
+				whatsapp_url: document.getElementById('whatsapp_url').value,
+                instagram_url: document.getElementById('instagram_url').value,
+                facebook_url: document.getElementById('facebook_url').value,
+				website_url: document.getElementById('website_url').value,
+				youtube_url: document.getElementById('youtube_url').value,
+				
+                entered_password: document.getElementById('entered_password').value,
+                current_password: document.getElementById('current_password').value,
+                action: 'update'
+            };
+
+            console.log('Updating business card with ID:', formData.recordId);
+            console.log('Sending JSON request to:', APPS_SCRIPT_URL);
+            console.log('JSON payload:', JSON.stringify(formData));
+
+            fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                body: JSON.stringify(formData),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors'
+            })
+            .then(response => {
+                console.log('JSON response status:', response.status, response.statusText);
+                return response.text().then(text => ({ response, text }));
+            })
+            .then(({ response, text }) => {
+                console.log('Raw response (JSON):', text);
+                try {
+                    const data = JSON.parse(text);
+                    if (data.status === 'success') {
+                        statusDiv.className = 'status-message success';
+                        statusDiv.textContent = '✅ Changes saved successfully!';
+                        setTimeout(() => {
+                            statusDiv.style.display = 'none';
+                        }, 3000);
+                    } else {
+                        throw new Error(data.message || 'Failed to save changes');
+                    }
+                } catch (error) {
+                    throw new Error(`Invalid JSON response: ${text}`);
+                }
+            })
+            .catch(error => {
+                console.error('JSON request failed:', error);
+                statusDiv.innerHTML = '<span class="loading-spinner"></span>Retrying with alternative method...';
+                
+                const formDataObj = new FormData();
+                for (const [key, value] of Object.entries(formData)) {
+                    formDataObj.append(key, value);
+                }
+
+                console.log('Sending FormData request to:', APPS_SCRIPT_URL);
+                return fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: formDataObj,
+                    mode: 'cors'
+                });
+            })
+            .then(response => {
+                console.log('FormData response status:', response.status, response.statusText);
+                return response.text().then(text => ({ response, text }));
+            })
+            .then(({ response, text }) => {
+                console.log('Raw response (FormData):', text);
+                try {
+                    const data = JSON.parse(text);
+                    if (data.status === 'success') {
+                        statusDiv.className = 'status-message success';
+                        statusDiv.textContent = '✅ Changes saved successfully!';
+                        setTimeout(() => {
+                            statusDiv.style.display = 'none';
+                        }, 3000);
+                    } else {
+                        throw new Error(data.message || 'Failed to save changes');
+                    }
+                } catch (error) {
+                    throw new Error(`Invalid JSON response: ${text}`);
+                }
+            })
+            .catch(error => {
+                console.error('FormData request failed:', error);
+                statusDiv.className = 'status-message error';
+                statusDiv.textContent = '❌ Error saving changes: ' + error.message;
+            })
+            .finally(() => {
+                saveButton.disabled = false;
+                saveButton.textContent = 'Save Changes';
+            });
+        });
+
+        const inputs = document.querySelectorAll('input[type="url"], input[type="password"]');
+        
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.value.trim() !== '') {
+                    this.style.borderColor = 'var(--success)';
+                } else if (this.required) {
+                    this.style.borderColor = 'var(--error)';
+                } else {
+                    this.style.borderColor = 'var(--gray-200)';
+                }
+            });
+
+            input.addEventListener('focus', function() {
+                this.style.borderColor = 'var(--primary)';
+            });
+        });
+    </script>
+</body>
+</html>
