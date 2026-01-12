@@ -405,6 +405,27 @@
             width: 100%;
         }
         
+        /* Update Link */
+        .update-link {
+            display: inline-flex;
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 10px;
+            transition: all 0.2s;
+            margin-top: 1rem;
+        }
+        
+        .update-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
         /* Responsive */
         @media (max-width: 768px) {
             .nav-menu {
@@ -569,6 +590,11 @@
             <div class="copyright">
                 <p>&copy; <span id="currentYear"></span> <span id="shopNameFooter">Shop</span>. All rights reserved.</p>
             </div>
+            
+            <!-- Update Link -->
+            <a href="#" class="update-link" id="updateLink" title="Update">
+                <i class="fas fa-cog"></i>
+            </a>
         </div>
     </footer>
     
@@ -1041,6 +1067,13 @@
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
             }, 300);
+            
+            // Set up update link with code parameter
+            const updateLink = document.getElementById('updateLink');
+            if (updateLink) {
+                const code = getCodeFromURL();
+                updateLink.href = `update.html?id=${code}`;
+            }
         }
         
         // Mobile menu toggle
