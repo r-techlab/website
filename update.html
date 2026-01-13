@@ -91,7 +91,7 @@
         }
 
         .container {
-            max-width: 600px;
+            max-width: 900px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
@@ -233,7 +233,8 @@
 
         input[type="text"],
         input[type="url"],
-        input[type="password"] {
+        input[type="password"],
+        textarea {
             width: 100%;
             padding: 1rem 1.5rem;
             border: 2px solid var(--gray-200);
@@ -244,9 +245,16 @@
             background: var(--white);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             outline: none;
+            font-family: 'Inter', sans-serif;
         }
 
-        input:focus {
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
             border-color: var(--primary);
             box-shadow: 
                 0 0 0 4px rgba(99, 102, 241, 0.1),
@@ -254,11 +262,13 @@
             transform: translateY(-2px);
         }
 
-        input:not(:placeholder-shown) {
+        input:not(:placeholder-shown),
+        textarea:not(:placeholder-shown) {
             border-color: var(--success);
         }
 
-        input:focus-visible {
+        input:focus-visible,
+        textarea:focus-visible {
             outline: 2px solid var(--primary);
             outline-offset: 2px;
         }
@@ -319,6 +329,44 @@
             box-shadow: 0 12px 32px rgba(71, 85, 105, 0.4);
         }
 
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #0da271);
+            color: white;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, var(--accent), #0891b2);
+            color: white;
+            box-shadow: 0 8px 24px rgba(6, 182, 212, 0.3);
+        }
+
+        .btn-info:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(6, 182, 212, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), #d97706);
+            color: white;
+            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
         .btn-primary:disabled {
             background: linear-gradient(135deg, var(--gray-400), var(--gray-500));
             cursor: not-allowed;
@@ -346,6 +394,109 @@
             to { transform: rotate(360deg); }
         }
 
+        /* Items Management Styles (Products, Services & Social Media) */
+        .items-management {
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: var(--gray-50);
+            border-radius: 16px;
+            border: 2px solid var(--gray-200);
+        }
+
+        .items-management.products {
+            background: rgba(6, 182, 212, 0.05);
+            border-color: rgba(6, 182, 212, 0.2);
+        }
+
+        .items-management.services {
+            background: rgba(16, 185, 129, 0.05);
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .items-management.social {
+            background: rgba(245, 158, 11, 0.05);
+            border-color: rgba(245, 158, 11, 0.2);
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 2px solid var(--gray-200);
+            transition: all 0.3s ease;
+        }
+
+        .item-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .item-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--gray-100);
+        }
+
+        .item-number {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .service-number { color: var(--success); }
+        .product-number { color: var(--accent); }
+        .social-number { color: var(--warning); }
+
+        .item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .item-fields {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .add-item-btn {
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .no-items {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray-500);
+            font-style: italic;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .services-tag {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .products-tag {
+            background: rgba(6, 182, 212, 0.1);
+            color: var(--accent);
+        }
+
+        .social-tag {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 1rem;
@@ -354,6 +505,7 @@
             .container {
                 padding: 2rem;
                 border-radius: 20px;
+                max-width: 100%;
             }
 
             h1 {
@@ -362,6 +514,17 @@
 
             .button-group {
                 flex-direction: column;
+            }
+
+            .item-card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .item-actions {
+                width: 100%;
+                justify-content: flex-end;
             }
         }
 
@@ -377,7 +540,8 @@
 
             input[type="text"],
             input[type="url"],
-            input[type="password"] {
+            input[type="password"],
+            textarea {
                 padding: 0.875rem 1.25rem;
                 font-size: 0.875rem;
             }
@@ -409,6 +573,7 @@
             <input type="hidden" id="current_password" name="current_password">
 
             <div class="form-grid">
+                <!-- Form groups 1-3 -->
                 <div class="form-group">
                     <label for="label1">Label 1</label>
                     <div class="input-wrapper">
@@ -445,18 +610,35 @@
                         <input type="text" id="text3" name="text3" placeholder="Enter corresponding text">
                     </div>
                 </div>
+
+                <!-- Label 4 - Products Section -->
                 <div class="form-group">
-                    <label for="label4">Label 4</label>
+                    <label for="label4">Label 4 (Products)</label>
                     <div class="input-wrapper">
-                        <input type="text" id="label4" name="label4" placeholder="Enter label">
+                        <input type="text" id="label4" name="label4" placeholder="e.g., Our Products, Featured Items" value="Products">
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label for="text4">Text 4</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="text4" name="text4" placeholder="Enter corresponding text">
+                    <label>Products Management <span class="section-tag products-tag">PRODUCTS</span></label>
+                    <div class="items-management products">
+                        <div id="products-container">
+                            <!-- Products will be dynamically added here -->
+                            <div class="no-items" id="no-products-message">
+                                No products added yet. Click "Add Product" to get started.
+                            </div>
+                        </div>
+                        
+                        <button type="button" id="add-product-btn" class="btn btn-info add-item-btn">
+                            <span>+ Add Product</span>
+                        </button>
                     </div>
+                    
+                    <!-- Hidden text4 field to store the serialized data -->
+                    <input type="hidden" id="text4" name="text4">
                 </div>
+
+                <!-- Form groups 5-7 -->
                 <div class="form-group">
                     <label for="label5">Label 5</label>
                     <div class="input-wrapper">
@@ -493,18 +675,35 @@
                         <input type="text" id="text7" name="text7" placeholder="Enter corresponding text">
                     </div>
                 </div>
+
+                <!-- Label 8 - Services Section -->
                 <div class="form-group">
-                    <label for="label8">Label 8</label>
+                    <label for="label8">Label 8 (Services)</label>
                     <div class="input-wrapper">
-                        <input type="text" id="label8" name="label8" placeholder="Enter label">
+                        <input type="text" id="label8" name="label8" placeholder="e.g., Our Services, What We Offer" value="Services">
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label for="text8">Text 8</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="text8" name="text8" placeholder="Enter corresponding text">
+                    <label>Services Management <span class="section-tag services-tag">SERVICES</span></label>
+                    <div class="items-management services">
+                        <div id="services-container">
+                            <!-- Services will be dynamically added here -->
+                            <div class="no-items" id="no-services-message">
+                                No services added yet. Click "Add Service" to get started.
+                            </div>
+                        </div>
+                        
+                        <button type="button" id="add-service-btn" class="btn btn-success add-item-btn">
+                            <span>+ Add Service</span>
+                        </button>
                     </div>
+                    
+                    <!-- Hidden text8 field to store the serialized data -->
+                    <input type="hidden" id="text8" name="text8">
                 </div>
+
+                <!-- Form groups 9-10 -->
                 <div class="form-group">
                     <label for="label9">Label 9</label>
                     <div class="input-wrapper">
@@ -518,17 +717,31 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="label10">Label 10</label>
+                    <label for="label10">Label 10 (Social Media)</label>
                     <div class="input-wrapper">
-                        <input type="text" id="label10" name="label10" placeholder="Enter label">
+                        <input type="text" id="label10" name="label10" placeholder="e.g., Follow Us, Connect With Us" value="Social Media">
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label for="text10">Text 10</label>
-                    <div class="input-wrapper">
-                        <input type="text" id="text10" name="text10" placeholder="Enter corresponding text">
+                    <label>Social Media Links <span class="section-tag social-tag">SOCIAL MEDIA</span></label>
+                    <div class="items-management social">
+                        <div id="social-container">
+                            <!-- Social media links will be dynamically added here -->
+                            <div class="no-items" id="no-social-message">
+                                No social media links added yet. Click "Add Social Media" to get started.
+                            </div>
+                        </div>
+                        
+                        <button type="button" id="add-social-btn" class="btn btn-warning add-item-btn">
+                            <span>+ Add Social Media</span>
+                        </button>
                     </div>
+                    
+                    <!-- Hidden text10 field to store the serialized data -->
+                    <input type="hidden" id="text10" name="text10">
                 </div>
+
                 <div class="form-group">
                     <label for="entered_password">Current Password</label>
                     <div class="input-wrapper">
@@ -554,24 +767,353 @@
         const SHEET_NAME = 'WebSite';
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxnySlm7pkTtyEYtgQjJmCSfBg2I6VWUzi8oNTukyzemiqMBlrbPK78fCmlRItIYFLobg/exec';
 
+        // Data stores for products, services, and social media
+        let products = [];
+        let services = [];
+        let socialMedia = [];
+
         function getIdFromUrl() {
             const urlParams = new URLSearchParams(window.location.search);
             const id = urlParams.get('id');
             return id || '10001';
         }
 
+        // Generic Items Management Functions
+        function createItemHTML(item, index, type) {
+            let typeLabel, typeClass, namePlaceholder, linkPlaceholder;
+            
+            if (type === 'product') {
+                typeLabel = 'Product';
+                typeClass = 'product';
+                namePlaceholder = 'Product Name (e.g., Premium Coffee)';
+                linkPlaceholder = 'Product Link (e.g., https://example.com/product)';
+            } else if (type === 'service') {
+                typeLabel = 'Service';
+                typeClass = 'service';
+                namePlaceholder = 'Service Name (e.g., Web Design)';
+                linkPlaceholder = 'Service Link (e.g., https://example.com/service)';
+            } else if (type === 'social') {
+                typeLabel = 'Social Media';
+                typeClass = 'social';
+                namePlaceholder = 'Platform Name (e.g., Facebook, Instagram, Twitter)';
+                linkPlaceholder = 'Profile URL (e.g., https://facebook.com/yourprofile)';
+            }
+            
+            const itemsArray = type === 'product' ? products : type === 'service' ? services : socialMedia;
+            
+            return `
+                <div class="item-card" data-index="${index}" data-type="${type}">
+                    <div class="item-card-header">
+                        <div class="item-number ${typeClass}-number">${typeLabel} ${index + 1}</div>
+                        <div class="item-actions">
+                            <button type="button" class="btn btn-secondary btn-sm move-up-btn" ${index === 0 ? 'disabled' : ''}>
+                                ↑ Move Up
+                            </button>
+                            <button type="button" class="btn btn-secondary btn-sm move-down-btn" ${index === itemsArray.length - 1 ? 'disabled' : ''}>
+                                ↓ Move Down
+                            </button>
+                            <button type="button" class="btn btn-sm" style="background: var(--error); color: white;" onclick="removeItem(${index}, '${type}')">
+                                ✕ Remove
+                            </button>
+                        </div>
+                    </div>
+                    <div class="item-fields">
+                        <input type="text" 
+                               class="item-name" 
+                               placeholder="${namePlaceholder}" 
+                               value="${item.name || ''}"
+                               onchange="updateItem(${index}, '${type}', 'name', this.value)">
+                        
+                        ${type === 'product' || type === 'service' ? `
+                        <textarea 
+                            class="item-description" 
+                            placeholder="${typeLabel} Description"
+                            onchange="updateItem(${index}, '${type}', 'description', this.value)">${item.description || ''}</textarea>
+                        ` : ''}
+                        
+                        <input type="url" 
+                               class="item-link" 
+                               placeholder="${linkPlaceholder}"
+                               value="${item.link || ''}"
+                               onchange="updateItem(${index}, '${type}', 'link', this.value)">
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderItems(items, containerId, type) {
+            const container = document.getElementById(containerId);
+            const noItemsMsg = document.getElementById(`no-${type}-message`);
+            
+            if (items.length === 0) {
+                container.innerHTML = `<div class="no-items" id="no-${type}-message">No ${type === 'social' ? 'social media links' : type + 's'} added yet. Click "Add ${type === 'social' ? 'Social Media' : type.charAt(0).toUpperCase() + type.slice(1)}" to get started.</div>`;
+                return;
+            }
+            
+            noItemsMsg?.remove();
+            
+            let html = '';
+            items.forEach((item, index) => {
+                html += createItemHTML(item, index, type);
+            });
+            container.innerHTML = html;
+            
+            // Attach move event listeners
+            attachMoveEventListeners(type);
+        }
+
+        function addItem(type) {
+            const item = {
+                name: '',
+                link: ''
+            };
+            
+            if (type === 'product' || type === 'service') {
+                item.description = '';
+            }
+            
+            if (type === 'product') {
+                products.push(item);
+                renderItems(products, 'products-container', 'product');
+                updateText4Field();
+            } else if (type === 'service') {
+                services.push(item);
+                renderItems(services, 'services-container', 'service');
+                updateText8Field();
+            } else if (type === 'social') {
+                socialMedia.push(item);
+                renderItems(socialMedia, 'social-container', 'social');
+                updateText10Field();
+            }
+        }
+
+        function updateItem(index, type, field, value) {
+            let items;
+            if (type === 'product') {
+                items = products;
+            } else if (type === 'service') {
+                items = services;
+            } else if (type === 'social') {
+                items = socialMedia;
+            }
+            
+            if (items && items[index]) {
+                items[index][field] = value;
+                
+                if (type === 'product') {
+                    updateText4Field();
+                } else if (type === 'service') {
+                    updateText8Field();
+                } else if (type === 'social') {
+                    updateText10Field();
+                }
+            }
+        }
+
+        function removeItem(index, type) {
+            if (confirm(`Are you sure you want to remove this ${type}?`)) {
+                if (type === 'product') {
+                    products.splice(index, 1);
+                    renderItems(products, 'products-container', 'product');
+                    updateText4Field();
+                } else if (type === 'service') {
+                    services.splice(index, 1);
+                    renderItems(services, 'services-container', 'service');
+                    updateText8Field();
+                } else if (type === 'social') {
+                    socialMedia.splice(index, 1);
+                    renderItems(socialMedia, 'social-container', 'social');
+                    updateText10Field();
+                }
+            }
+        }
+
+        function attachMoveEventListeners(type) {
+            let selector;
+            if (type === 'product') {
+                selector = '#products-container';
+            } else if (type === 'service') {
+                selector = '#services-container';
+            } else if (type === 'social') {
+                selector = '#social-container';
+            }
+            
+            // Move Up buttons
+            document.querySelectorAll(`${selector} .move-up-btn`).forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.closest('.item-card').dataset.index);
+                    moveItem(index, index - 1, type);
+                });
+            });
+
+            // Move Down buttons
+            document.querySelectorAll(`${selector} .move-down-btn`).forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.closest('.item-card').dataset.index);
+                    moveItem(index, index + 1, type);
+                });
+            });
+        }
+
+        function moveItem(fromIndex, toIndex, type) {
+            let items, containerId;
+            if (type === 'product') {
+                items = products;
+                containerId = 'products-container';
+            } else if (type === 'service') {
+                items = services;
+                containerId = 'services-container';
+            } else if (type === 'social') {
+                items = socialMedia;
+                containerId = 'social-container';
+            }
+            
+            if (toIndex >= 0 && toIndex < items.length) {
+                const [movedItem] = items.splice(fromIndex, 1);
+                items.splice(toIndex, 0, movedItem);
+                renderItems(items, containerId, type);
+                
+                if (type === 'product') {
+                    updateText4Field();
+                } else if (type === 'service') {
+                    updateText8Field();
+                } else if (type === 'social') {
+                    updateText10Field();
+                }
+            }
+        }
+
+        // Update Products field (TEXT4)
+        function updateText4Field() {
+            // Format: [::_-Product1 Name-_::] [::_-Product1 Description-_::] [::_-https://link1-_::] [::_-Product2 Name-_::] ...
+            const formattedProducts = products
+                .filter(product => product.name && product.description && product.link)
+                .map((product, index) => 
+                    `[::_-${product.name}-_::] [::_-${product.description}-_::] [::_-${product.link}-_::]`
+                )
+                .join(' ');
+            
+            document.getElementById('text4').value = formattedProducts;
+            console.log('Updated text4 value:', formattedProducts);
+        }
+
+        // Update Services field (TEXT8)
+        function updateText8Field() {
+            // Format: [::_-Service1 Name-_::] [::_-Service1 Description-_::] [::_-https://link1-_::] [::_-Service2 Name-_::] ...
+            const formattedServices = services
+                .filter(service => service.name && service.description && service.link)
+                .map((service, index) => 
+                    `[::_-${service.name}-_::] [::_-${service.description}-_::] [::_-${service.link}-_::]`
+                )
+                .join(' ');
+            
+            document.getElementById('text8').value = formattedServices;
+            console.log('Updated text8 value:', formattedServices);
+        }
+
+        // Update Social Media field (TEXT10)
+        function updateText10Field() {
+            // Format: [::_-WhatsApp-_::][::_-https://wa.me/971XXXXXXXXX-_::][::_-X (Twitter)_-::][::_-https://x.com/789-_::]...
+            const formattedSocial = socialMedia
+                .filter(social => social.name && social.link)
+                .map((social, index) => 
+                    `[::_-${social.name}-_::][::_-${social.link}-_::]`
+                )
+                .join('');
+            
+            document.getElementById('text10').value = formattedSocial;
+            console.log('Updated text10 value:', formattedSocial);
+        }
+
+        // Parse items from formatted string
+        function parseItems(textValue, type) {
+            if (!textValue || textValue.trim() === '') {
+                return [];
+            }
+            
+            const items = [];
+            
+            if (type === 'product' || type === 'service') {
+                // Parse products and services: [::_-Name-_::] [::_-Description-_::] [::_-Link-_::]
+                const pattern = /\[::_-([^_]+?)-_::\]/g;
+                const matches = [...textValue.matchAll(pattern)];
+                
+                for (let i = 0; i < matches.length; i += 3) {
+                    if (matches[i] && matches[i+1] && matches[i+2]) {
+                        items.push({
+                            name: matches[i][1],
+                            description: matches[i+1][1],
+                            link: matches[i+2][1]
+                        });
+                    }
+                }
+            } else if (type === 'social') {
+                // Parse social media: [::_-Name-_::][::_-Link-_::]
+                const pattern = /\[::_-([^_]+?)-_::\]\[::_-([^_]+?)-_::\]/g;
+                const matches = [...textValue.matchAll(pattern)];
+                
+                matches.forEach(match => {
+                    items.push({
+                        name: match[1],
+                        link: match[2]
+                    });
+                });
+            }
+            
+            console.log(`Parsed ${type} items:`, items);
+            return items;
+        }
+
+        // Improved fetch function with better error handling
+        async function safeFetch(url, options = {}) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 30000);
+            
+            try {
+                const response = await fetch(url, {
+                    ...options,
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                return response;
+            } catch (error) {
+                clearTimeout(timeoutId);
+                
+                if (error.name === 'AbortError') {
+                    throw new Error('Request timeout. Please check your internet connection and try again.');
+                } else if (error.message.includes('Failed to fetch')) {
+                    throw new Error('Network error. Please check your internet connection.');
+                } else {
+                    throw error;
+                }
+            }
+        }
+
+        // Main initialization
         document.addEventListener('DOMContentLoaded', function() {
             const recordId = getIdFromUrl();
             document.getElementById('recordId').value = recordId;
             document.getElementById('displayId').textContent = recordId;
-    
+
+            // Add button event listeners
+            document.getElementById('add-product-btn').addEventListener('click', () => addItem('product'));
+            document.getElementById('add-service-btn').addEventListener('click', () => addItem('service'));
+            document.getElementById('add-social-btn').addEventListener('click', () => addItem('social'));
+
             document.getElementById('changePasswordBtn').addEventListener('click', function() {
                 window.location.href = `change-password.html?id=${recordId}`;
             });
             
             console.log('Loading business card with ID:', recordId);
             
-            fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`)
+            // Load data from Google Sheets
+            safeFetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`)
                 .then(response => response.json())
                 .then(data => {
                     const rows = data.values;
@@ -611,7 +1153,7 @@
                             profile[normalizedHeader] = index < profileData.length ? profileData[index] : '';
                         });
 
-                        // Map all 10 label-text pairs
+                        // Map all form fields
                         document.getElementById('label1').value = profile.label1 || '';
                         document.getElementById('text1').value = profile.text1 || '';
                         document.getElementById('label2').value = profile.label2 || '';
@@ -619,7 +1161,6 @@
                         document.getElementById('label3').value = profile.label3 || '';
                         document.getElementById('text3').value = profile.text3 || '';
                         document.getElementById('label4').value = profile.label4 || '';
-                        document.getElementById('text4').value = profile.text4 || '';
                         document.getElementById('label5').value = profile.label5 || '';
                         document.getElementById('text5').value = profile.text5 || '';
                         document.getElementById('label6').value = profile.label6 || '';
@@ -627,13 +1168,36 @@
                         document.getElementById('label7').value = profile.label7 || '';
                         document.getElementById('text7').value = profile.text7 || '';
                         document.getElementById('label8').value = profile.label8 || '';
-                        document.getElementById('text8').value = profile.text8 || '';
                         document.getElementById('label9').value = profile.label9 || '';
                         document.getElementById('text9').value = profile.text9 || '';
                         document.getElementById('label10').value = profile.label10 || '';
-                        document.getElementById('text10').value = profile.text10 || '';
                         
                         document.getElementById('current_password').value = profile.password || '';
+
+                        // Parse and load products from text4
+                        const text4Value = profile.text4 || '';
+                        console.log('Original text4 value:', text4Value);
+                        products = parseItems(text4Value, 'product');
+                        
+                        // Parse and load services from text8
+                        const text8Value = profile.text8 || '';
+                        console.log('Original text8 value:', text8Value);
+                        services = parseItems(text8Value, 'service');
+                        
+                        // Parse and load social media from text10
+                        const text10Value = profile.text10 || '';
+                        console.log('Original text10 value:', text10Value);
+                        socialMedia = parseItems(text10Value, 'social');
+                        
+                        // Render products, services, and social media
+                        renderItems(products, 'products-container', 'product');
+                        renderItems(services, 'services-container', 'service');
+                        renderItems(socialMedia, 'social-container', 'social');
+                        
+                        // Update hidden fields
+                        updateText4Field();
+                        updateText8Field();
+                        updateText10Field();
 
                         document.getElementById('status').style.display = 'none';
                         document.getElementById('edit-form').style.display = 'block';
@@ -642,12 +1206,19 @@
                 .catch(error => {
                     console.error('Error loading data:', error);
                     document.getElementById('status').className = 'status-message error';
-                    document.getElementById('status').textContent = 'Error loading data: ' + error.message;
+                    document.getElementById('status').innerHTML = `Error loading data: ${error.message}<br><small>Please check your internet connection and try again.</small>`;
                 });
         });
 
-        document.getElementById('edit-form').addEventListener('submit', function(e) {
+        // Form submission with improved error handling
+        document.getElementById('edit-form').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            // Update fields with current data before submission
+            updateText4Field();
+            updateText8Field();
+            updateText10Field();
+            
             const statusDiv = document.getElementById('status');
             const saveButton = document.getElementById('saveButton');
             
@@ -661,7 +1232,7 @@
             const formData = {
                 recordId: document.getElementById('recordId').value,
                 
-                // All 10 label-text pairs
+                // All form fields
                 label1: document.getElementById('label1').value,
                 text1: document.getElementById('text1').value,
                 label2: document.getElementById('label2').value,
@@ -669,7 +1240,7 @@
                 label3: document.getElementById('label3').value,
                 text3: document.getElementById('text3').value,
                 label4: document.getElementById('label4').value,
-                text4: document.getElementById('text4').value,
+                text4: document.getElementById('text4').value, // Products data
                 label5: document.getElementById('label5').value,
                 text5: document.getElementById('text5').value,
                 label6: document.getElementById('label6').value,
@@ -677,72 +1248,35 @@
                 label7: document.getElementById('label7').value,
                 text7: document.getElementById('text7').value,
                 label8: document.getElementById('label8').value,
-                text8: document.getElementById('text8').value,
+                text8: document.getElementById('text8').value, // Services data
                 label9: document.getElementById('label9').value,
                 text9: document.getElementById('text9').value,
                 label10: document.getElementById('label10').value,
-                text10: document.getElementById('text10').value,
+                text10: document.getElementById('text10').value, // Social Media data
                 
                 entered_password: document.getElementById('entered_password').value,
                 current_password: document.getElementById('current_password').value,
                 action: 'update'
             };
 
-            console.log('Updating business card with ID:', formData.recordId);
-            console.log('Sending JSON request to:', APPS_SCRIPT_URL);
-            console.log('JSON payload:', JSON.stringify(formData));
+            console.log('Sending form data to Apps Script...');
+            console.log('Products data:', formData.text4);
+            console.log('Services data:', formData.text8);
+            console.log('Social media data:', formData.text10);
 
-            fetch(APPS_SCRIPT_URL, {
-                method: 'POST',
-                body: JSON.stringify(formData),
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                mode: 'cors'
-            })
-            .then(response => {
-                console.log('JSON response status:', response.status, response.statusText);
-                return response.text().then(text => ({ response, text }));
-            })
-            .then(({ response, text }) => {
-                console.log('Raw response (JSON):', text);
-                try {
-                    const data = JSON.parse(text);
-                    if (data.status === 'success') {
-                        statusDiv.className = 'status-message success';
-                        statusDiv.textContent = '✅ Changes saved successfully!';
-                        setTimeout(() => {
-                            statusDiv.style.display = 'none';
-                        }, 3000);
-                    } else {
-                        throw new Error(data.message || 'Failed to save changes');
-                    }
-                } catch (error) {
-                    throw new Error(`Invalid JSON response: ${text}`);
-                }
-            })
-            .catch(error => {
-                console.error('JSON request failed:', error);
-                statusDiv.innerHTML = '<span class="loading-spinner"></span>Retrying with alternative method...';
-                
-                const formDataObj = new FormData();
-                for (const [key, value] of Object.entries(formData)) {
-                    formDataObj.append(key, value);
-                }
-
-                console.log('Sending FormData request to:', APPS_SCRIPT_URL);
-                return fetch(APPS_SCRIPT_URL, {
+            try {
+                // Try JSON first
+                const response = await safeFetch(APPS_SCRIPT_URL, {
                     method: 'POST',
-                    body: formDataObj,
-                    mode: 'cors'
+                    body: JSON.stringify(formData),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 });
-            })
-            .then(response => {
-                console.log('FormData response status:', response.status, response.statusText);
-                return response.text().then(text => ({ response, text }));
-            })
-            .then(({ response, text }) => {
-                console.log('Raw response (FormData):', text);
+
+                const text = await response.text();
+                console.log('Apps Script response:', text);
+
                 try {
                     const data = JSON.parse(text);
                     if (data.status === 'success') {
@@ -754,22 +1288,103 @@
                     } else {
                         throw new Error(data.message || 'Failed to save changes');
                     }
-                } catch (error) {
-                    throw new Error(`Invalid JSON response: ${text}`);
+                } catch (parseError) {
+                    // Try FormData if JSON fails
+                    console.log('JSON parsing failed, trying FormData...');
+                    await tryFormDataSubmit(formData, statusDiv);
                 }
-            })
-            .catch(error => {
-                console.error('FormData request failed:', error);
-                statusDiv.className = 'status-message error';
-                statusDiv.textContent = '❌ Error saving changes: ' + error.message;
-            })
-            .finally(() => {
+            } catch (fetchError) {
+                console.error('Fetch error:', fetchError);
+                
+                // Try alternative CORS-friendly approach
+                statusDiv.innerHTML = '<span class="loading-spinner"></span>Trying alternative method...';
+                
+                try {
+                    await tryAlternativeSubmit(formData);
+                    statusDiv.className = 'status-message success';
+                    statusDiv.textContent = '✅ Changes saved successfully!';
+                    setTimeout(() => {
+                        statusDiv.style.display = 'none';
+                    }, 3000);
+                } catch (altError) {
+                    console.error('Alternative method failed:', altError);
+                    
+                    // Try direct FormData
+                    try {
+                        await tryFormDataSubmit(formData, statusDiv);
+                    } catch (finalError) {
+                        statusDiv.className = 'status-message error';
+                        statusDiv.innerHTML = `
+                            ❌ Error saving changes: ${fetchError.message}<br>
+                            <small>Please try the following:</small>
+                            <ul style="text-align: left; margin: 10px 0; font-size: 0.9em;">
+                                <li>Check your internet connection</li>
+                                <li>Make sure the Apps Script URL is correct</li>
+                                <li>Try refreshing the page</li>
+                                <li>If the problem persists, contact support</li>
+                            </ul>
+                        `;
+                    }
+                }
+            } finally {
                 saveButton.disabled = false;
                 saveButton.textContent = 'Save Changes';
-            });
+            }
         });
 
-        const inputs = document.querySelectorAll('input[type="text"], input[type="url"], input[type="password"]');
+        // Helper function for FormData submission
+        async function tryFormDataSubmit(formData, statusDiv) {
+            const formDataObj = new FormData();
+            for (const [key, value] of Object.entries(formData)) {
+                formDataObj.append(key, value);
+            }
+
+            const response = await safeFetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                body: formDataObj
+            });
+
+            const text = await response.text();
+            console.log('FormData response:', text);
+
+            const data = JSON.parse(text);
+            if (data.status === 'success') {
+                statusDiv.className = 'status-message success';
+                statusDiv.textContent = '✅ Changes saved successfully!';
+                setTimeout(() => {
+                    statusDiv.style.display = 'none';
+                }, 3000);
+            } else {
+                throw new Error(data.message || 'Failed to save changes');
+            }
+        }
+
+        // Alternative submission method using URL parameters
+        async function tryAlternativeSubmit(formData) {
+            // Build URL with query parameters
+            const params = new URLSearchParams();
+            for (const [key, value] of Object.entries(formData)) {
+                params.append(key, value);
+            }
+            
+            const url = `${APPS_SCRIPT_URL}?${params.toString()}`;
+            
+            const response = await safeFetch(url, {
+                method: 'GET'
+            });
+            
+            const text = await response.text();
+            const data = JSON.parse(text);
+            
+            if (data.status !== 'success') {
+                throw new Error(data.message || 'Alternative method failed');
+            }
+            
+            return data;
+        }
+
+        // Input validation styling
+        const inputs = document.querySelectorAll('input[type="text"], input[type="url"], input[type="password"], textarea');
         
         inputs.forEach(input => {
             input.addEventListener('blur', function() {
