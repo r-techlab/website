@@ -900,12 +900,22 @@
             if (items && items[index]) {
                 items[index][field] = value;
                 
+                // Update the corresponding hidden field
                 if (type === 'product') {
                     updateText4Field();
                 } else if (type === 'service') {
                     updateText8Field();
                 } else if (type === 'social') {
                     updateText10Field();
+                }
+                
+                // Re-render to update move button states
+                if (type === 'product') {
+                    renderItems(products, 'products-container', 'product');
+                } else if (type === 'service') {
+                    renderItems(services, 'services-container', 'service');
+                } else if (type === 'social') {
+                    renderItems(socialMedia, 'social-container', 'social');
                 }
             }
         }
@@ -983,9 +993,9 @@
             }
         }
 
-        // Update Products field (TEXT4)
+        // Update Products field (TEXT4) - Using original format
         function updateText4Field() {
-            // Format: [::_-Product1 Name-_::] [::_-Product1 Description-_::] [::_-https://link1-_::] [::_-Product2 Name-_::] ...
+            // Original format: [::_-Product1 Name-_::] [::_-Product1 Description-_::] [::_-https://link1-_::]
             const formattedProducts = products
                 .filter(product => product.name && product.description && product.link)
                 .map((product, index) => 
@@ -995,11 +1005,12 @@
             
             document.getElementById('text4').value = formattedProducts;
             console.log('Updated text4 value:', formattedProducts);
+            console.log('Current products data:', products);
         }
 
-        // Update Services field (TEXT8)
+        // Update Services field (TEXT8) - Using original format
         function updateText8Field() {
-            // Format: [::_-Service1 Name-_::] [::_-Service1 Description-_::] [::_-https://link1-_::] [::_-Service2 Name-_::] ...
+            // Original format: [::_-Service1 Name-_::] [::_-Service1 Description-_::] [::_-https://link1-_::]
             const formattedServices = services
                 .filter(service => service.name && service.description && service.link)
                 .map((service, index) => 
@@ -1009,11 +1020,12 @@
             
             document.getElementById('text8').value = formattedServices;
             console.log('Updated text8 value:', formattedServices);
+            console.log('Current services data:', services);
         }
 
-        // Update Social Media field (TEXT10)
+        // Update Social Media field (TEXT10) - Using original format
         function updateText10Field() {
-            // Format: [::_-WhatsApp-_::][::_-https://wa.me/971XXXXXXXXX-_::][::_-X (Twitter)_-::][::_-https://x.com/789-_::]...
+            // Original format: [::_-WhatsApp-_::][::_-https://wa.me/971XXXXXXXXX-_::]
             const formattedSocial = socialMedia
                 .filter(social => social.name && social.link)
                 .map((social, index) => 
@@ -1025,43 +1037,95 @@
             console.log('Updated text10 value:', formattedSocial);
         }
 
-        // Parse items from formatted string
+        // Parse items from formatted string - ORIGINAL FORMAT ONLY
         function parseItems(textValue, type) {
             if (!textValue || textValue.trim() === '') {
+                console.log(`No ${type} data to parse`);
                 return [];
             }
             
             const items = [];
+            console.log(`Parsing ${type} text:`, textValue);
             
-            if (type === 'product' || type === 'service') {
-                // Parse products and services: [::_-Name-_::] [::_-Description-_::] [::_-Link-_::]
-                const pattern = /\[::_-([^_]+?)-_::\]/g;
-                const matches = [...textValue.matchAll(pattern)];
-                
-                for (let i = 0; i < matches.length; i += 3) {
-                    if (matches[i] && matches[i+1] && matches[i+2]) {
-                        items.push({
-                            name: matches[i][1],
-                            description: matches[i+1][1],
-                            link: matches[i+2][1]
-                        });
+            try {
+                if (type === 'product' || type === 'service') {
+                    // Original format: [::_-Name-_::] [::_-Description-_::] [::_-Link-_::]
+                    // Use simple string splitting for reliability
+                    let tempText = textValue;
+                    while (tempText.includes('[::_-') && tempText.includes('-_::]')) {
+                        const start = tempText.indexOf('[::_-');
+                        const end = tempText.indexOf('-_::]', start);
+                        
+                        if (start !== -1 && end !== -1) {
+                            const content = tempText.substring(start + 5, end);
+                            
+                            // Remove this part from tempText
+                            tempText = tempText.substring(end + 5);
+                            
+                            // Store the content
+                            items.push(content);
+                        } else {
+                            break;
+                        }
                     }
+                    
+                    console.log(`Extracted parts for ${type}:`, items);
+                    
+                    // Group in triplets: name, description, link
+                    const groupedItems = [];
+                    for (let i = 0; i < items.length; i += 3) {
+                        if (i + 2 < items.length) {
+                            groupedItems.push({
+                                name: items[i] || '',
+                                description: items[i + 1] || '',
+                                link: items[i + 2] || ''
+                            });
+                        }
+                    }
+                    
+                    console.log(`Grouped ${type} items:`, groupedItems);
+                    return groupedItems;
+                    
+                } else if (type === 'social') {
+                    // Original format: [::_-Name-_::][::_-Link-_::]
+                    let tempText = textValue;
+                    const socialItems = [];
+                    
+                    while (tempText.includes('[::_-') && tempText.includes('-_::]')) {
+                        // Find first pair
+                        const start1 = tempText.indexOf('[::_-');
+                        const end1 = tempText.indexOf('-_::]', start1);
+                        
+                        if (start1 === -1 || end1 === -1) break;
+                        
+                        const name = tempText.substring(start1 + 5, end1);
+                        
+                        // Remove first part
+                        tempText = tempText.substring(end1 + 5);
+                        
+                        // Find second pair
+                        const start2 = tempText.indexOf('[::_-');
+                        const end2 = tempText.indexOf('-_::]', start2);
+                        
+                        if (start2 === -1 || end2 === -1) break;
+                        
+                        const link = tempText.substring(start2 + 5, end2);
+                        
+                        // Remove second part
+                        tempText = tempText.substring(end2 + 5);
+                        
+                        socialItems.push({ name, link });
+                    }
+                    
+                    console.log(`Parsed social items:`, socialItems);
+                    return socialItems;
                 }
-            } else if (type === 'social') {
-                // Parse social media: [::_-Name-_::][::_-Link-_::]
-                const pattern = /\[::_-([^_]+?)-_::\]\[::_-([^_]+?)-_::\]/g;
-                const matches = [...textValue.matchAll(pattern)];
-                
-                matches.forEach(match => {
-                    items.push({
-                        name: match[1],
-                        link: match[2]
-                    });
-                });
+            } catch (error) {
+                console.error(`Error parsing ${type} items:`, error);
+                return [];
             }
             
-            console.log(`Parsed ${type} items:`, items);
-            return items;
+            return [];
         }
 
         // Improved fetch function with better error handling
@@ -1116,13 +1180,15 @@
             safeFetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`)
                 .then(response => response.json())
                 .then(data => {
+                    console.log('Data received from Google Sheets:', data);
                     const rows = data.values;
                     if (rows && rows.length > 0) {
                         const headers = rows[0];
+                        console.log('Headers:', headers);
                         
                         let idColumnIndex = -1;
                         headers.forEach((header, index) => {
-                            if (header.toLowerCase().trim() === 'id') {
+                            if (header && header.toLowerCase().trim() === 'id') {
                                 idColumnIndex = index;
                                 console.log('Found ID column at index:', idColumnIndex);
                             }
@@ -1132,9 +1198,10 @@
                         
                         if (idColumnIndex !== -1) {
                             for (let i = 1; i < rows.length; i++) {
-                                if (rows[i][idColumnIndex] === recordId) {
+                                if (rows[i] && rows[i][idColumnIndex] === recordId) {
                                     profileData = rows[i];
                                     console.log('Found matching record at row:', i + 1);
+                                    console.log('Profile data:', profileData);
                                     break;
                                 }
                             }
@@ -1149,9 +1216,13 @@
 
                         const profile = {};
                         headers.forEach((header, index) => {
-                            const normalizedHeader = header.toLowerCase().trim();
-                            profile[normalizedHeader] = index < profileData.length ? profileData[index] : '';
+                            if (header) {
+                                const normalizedHeader = header.toLowerCase().trim();
+                                profile[normalizedHeader] = index < profileData.length ? (profileData[index] || '') : '';
+                            }
                         });
+
+                        console.log('Profile object:', profile);
 
                         // Map all form fields
                         document.getElementById('label1').value = profile.label1 || '';
@@ -1160,19 +1231,27 @@
                         document.getElementById('text2').value = profile.text2 || '';
                         document.getElementById('label3').value = profile.label3 || '';
                         document.getElementById('text3').value = profile.text3 || '';
-                        document.getElementById('label4').value = profile.label4 || '';
+                        document.getElementById('label4').value = profile.label4 || 'Products';
                         document.getElementById('label5').value = profile.label5 || '';
                         document.getElementById('text5').value = profile.text5 || '';
                         document.getElementById('label6').value = profile.label6 || '';
                         document.getElementById('text6').value = profile.text6 || '';
                         document.getElementById('label7').value = profile.label7 || '';
                         document.getElementById('text7').value = profile.text7 || '';
-                        document.getElementById('label8').value = profile.label8 || '';
+                        document.getElementById('label8').value = profile.label8 || 'Services';
                         document.getElementById('label9').value = profile.label9 || '';
                         document.getElementById('text9').value = profile.text9 || '';
-                        document.getElementById('label10').value = profile.label10 || '';
+                        document.getElementById('label10').value = profile.label10 || 'Social Media';
                         
                         document.getElementById('current_password').value = profile.password || '';
+
+                        // Debug logging for raw data
+                        console.log('text4 raw value from sheet:', profile.text4);
+                        console.log('text4 length:', profile.text4 ? profile.text4.length : 0);
+                        console.log('text8 raw value from sheet:', profile.text8);
+                        console.log('text8 length:', profile.text8 ? profile.text8.length : 0);
+                        console.log('text10 raw value from sheet:', profile.text10);
+                        console.log('text10 length:', profile.text10 ? profile.text10.length : 0);
 
                         // Parse and load products from text4
                         const text4Value = profile.text4 || '';
@@ -1189,6 +1268,29 @@
                         console.log('Original text10 value:', text10Value);
                         socialMedia = parseItems(text10Value, 'social');
                         
+                        // Debug logging for parsed data
+                        console.log('Parsed products count:', products.length);
+                        console.log('Parsed services count:', services.length);
+                        console.log('Parsed social media count:', socialMedia.length);
+                        
+                        // Check each product
+                        products.forEach((product, index) => {
+                            console.log(`Product ${index + 1}:`, {
+                                name: product.name,
+                                description: product.description,
+                                link: product.link
+                            });
+                        });
+                        
+                        // Check each service
+                        services.forEach((service, index) => {
+                            console.log(`Service ${index + 1}:`, {
+                                name: service.name,
+                                description: service.description,
+                                link: service.link
+                            });
+                        });
+
                         // Render products, services, and social media
                         renderItems(products, 'products-container', 'product');
                         renderItems(services, 'services-container', 'service');
@@ -1201,6 +1303,9 @@
 
                         document.getElementById('status').style.display = 'none';
                         document.getElementById('edit-form').style.display = 'block';
+                    } else {
+                        document.getElementById('status').className = 'status-message error';
+                        document.getElementById('status').innerHTML = 'No data found in Google Sheet.';
                     }
                 })
                 .catch(error => {
@@ -1265,13 +1370,15 @@
             console.log('Social media data:', formData.text10);
 
             try {
-                // Try JSON first
-                const response = await safeFetch(APPS_SCRIPT_URL, {
+                // Use FormData which works better with Apps Script
+                const formDataObj = new FormData();
+                for (const [key, value] of Object.entries(formData)) {
+                    formDataObj.append(key, value);
+                }
+
+                const response = await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
-                    body: JSON.stringify(formData),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
+                    body: formDataObj
                 });
 
                 const text = await response.text();
@@ -1289,99 +1396,37 @@
                         throw new Error(data.message || 'Failed to save changes');
                     }
                 } catch (parseError) {
-                    // Try FormData if JSON fails
-                    console.log('JSON parsing failed, trying FormData...');
-                    await tryFormDataSubmit(formData, statusDiv);
+                    console.error('Error parsing response:', parseError);
+                    // If response is not JSON, check if it contains success message
+                    if (text.includes('success') || text.includes('updated')) {
+                        statusDiv.className = 'status-message success';
+                        statusDiv.textContent = '✅ Changes saved successfully!';
+                        setTimeout(() => {
+                            statusDiv.style.display = 'none';
+                        }, 3000);
+                    } else {
+                        throw new Error('Invalid response from server');
+                    }
                 }
             } catch (fetchError) {
                 console.error('Fetch error:', fetchError);
                 
-                // Try alternative CORS-friendly approach
-                statusDiv.innerHTML = '<span class="loading-spinner"></span>Trying alternative method...';
-                
-                try {
-                    await tryAlternativeSubmit(formData);
-                    statusDiv.className = 'status-message success';
-                    statusDiv.textContent = '✅ Changes saved successfully!';
-                    setTimeout(() => {
-                        statusDiv.style.display = 'none';
-                    }, 3000);
-                } catch (altError) {
-                    console.error('Alternative method failed:', altError);
-                    
-                    // Try direct FormData
-                    try {
-                        await tryFormDataSubmit(formData, statusDiv);
-                    } catch (finalError) {
-                        statusDiv.className = 'status-message error';
-                        statusDiv.innerHTML = `
-                            ❌ Error saving changes: ${fetchError.message}<br>
-                            <small>Please try the following:</small>
-                            <ul style="text-align: left; margin: 10px 0; font-size: 0.9em;">
-                                <li>Check your internet connection</li>
-                                <li>Make sure the Apps Script URL is correct</li>
-                                <li>Try refreshing the page</li>
-                                <li>If the problem persists, contact support</li>
-                            </ul>
-                        `;
-                    }
-                }
+                statusDiv.className = 'status-message error';
+                statusDiv.innerHTML = `
+                    ❌ Error saving changes: ${fetchError.message}<br>
+                    <small>Please try the following:</small>
+                    <ul style="text-align: left; margin: 10px 0; font-size: 0.9em;">
+                        <li>Check your internet connection</li>
+                        <li>Make sure the Apps Script URL is correct</li>
+                        <li>Try refreshing the page</li>
+                        <li>If the problem persists, contact support</li>
+                    </ul>
+                `;
             } finally {
                 saveButton.disabled = false;
                 saveButton.textContent = 'Save Changes';
             }
         });
-
-        // Helper function for FormData submission
-        async function tryFormDataSubmit(formData, statusDiv) {
-            const formDataObj = new FormData();
-            for (const [key, value] of Object.entries(formData)) {
-                formDataObj.append(key, value);
-            }
-
-            const response = await safeFetch(APPS_SCRIPT_URL, {
-                method: 'POST',
-                body: formDataObj
-            });
-
-            const text = await response.text();
-            console.log('FormData response:', text);
-
-            const data = JSON.parse(text);
-            if (data.status === 'success') {
-                statusDiv.className = 'status-message success';
-                statusDiv.textContent = '✅ Changes saved successfully!';
-                setTimeout(() => {
-                    statusDiv.style.display = 'none';
-                }, 3000);
-            } else {
-                throw new Error(data.message || 'Failed to save changes');
-            }
-        }
-
-        // Alternative submission method using URL parameters
-        async function tryAlternativeSubmit(formData) {
-            // Build URL with query parameters
-            const params = new URLSearchParams();
-            for (const [key, value] of Object.entries(formData)) {
-                params.append(key, value);
-            }
-            
-            const url = `${APPS_SCRIPT_URL}?${params.toString()}`;
-            
-            const response = await safeFetch(url, {
-                method: 'GET'
-            });
-            
-            const text = await response.text();
-            const data = JSON.parse(text);
-            
-            if (data.status !== 'success') {
-                throw new Error(data.message || 'Alternative method failed');
-            }
-            
-            return data;
-        }
 
         // Input validation styling
         const inputs = document.querySelectorAll('input[type="text"], input[type="url"], input[type="password"], textarea');
